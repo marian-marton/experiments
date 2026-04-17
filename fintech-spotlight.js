@@ -2,7 +2,6 @@
   var container = document.getElementById('hero-animation');
   if(!container) return;
 
-  /* ── Estilos ── */
   var style = document.createElement('style');
   style.textContent = [
     '.ft-ui-layer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:#010408;}',
@@ -59,8 +58,9 @@
     '.ft-act-name{font-size:8px;color:rgba(255,255,255,0.45);font-weight:500;}',
     '.ft-act-sub{font-size:7px;color:rgba(255,255,255,0.2);}',
     '.ft-act-amount{font-size:8px;color:rgba(255,255,255,0.3);margin-left:auto;}',
-    '#ft-customize-btn{position:absolute;bottom:20px;left:20px;z-index:20;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:12px;letter-spacing:0.08em;padding:8px 16px;border-radius:999px;cursor:pointer;font-family:inherit;}',
-    '#ft-panel{position:absolute;bottom:60px;left:20px;z-index:20;background:rgba(1,4,8,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;width:240px;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity 0.3s,transform 0.3s;font-family:inherit;}',
+    '#ft-customize-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:12px;letter-spacing:0.08em;padding:8px 16px;border-radius:999px;cursor:pointer;font-family:inherit;transition:background 0.3s;}',
+    '#ft-customize-btn:hover{background:rgba(255,255,255,0.1);}',
+    '#ft-panel{position:fixed;bottom:60px;right:20px;left:auto;z-index:9999;background:rgba(1,4,8,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;width:240px;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity 0.3s,transform 0.3s;font-family:inherit;}',
     '#ft-panel.visible{opacity:1;transform:translateY(0);pointer-events:all;}',
     '.ft-cl{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;margin-top:14px;display:block;}',
     '.ft-cl:first-child{margin-top:0;}',
@@ -69,11 +69,11 @@
     '.ft-cr input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#1a3a6e;cursor:pointer;}',
     '.ft-cv{font-size:11px;color:rgba(255,255,255,0.3);min-width:32px;text-align:right;}',
     '.ft-divl{height:0.5px;background:rgba(255,255,255,0.06);margin:14px 0;}',
-    '#ft-reset{width:100%;margin-top:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:0.08em;padding:7px;border-radius:999px;cursor:pointer;font-family:inherit;}'
+    '#ft-reset{width:100%;margin-top:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:0.08em;padding:7px;border-radius:999px;cursor:pointer;font-family:inherit;transition:background 0.2s;}',
+    '#ft-reset:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);}'
   ].join('');
   document.head.appendChild(style);
 
-  /* ── HTML de la UI ── */
   function buildDashboard(){
     return [
       '<div class="ft-sidebar">',
@@ -91,34 +91,17 @@
       '</div>',
       '<div class="ft-panel-left">',
         '<span class="ft-section-title">Income & Expenses</span>',
-        '<div class="ft-chart-ring">',
-          '<svg viewBox="0 0 100 100" width="90" height="90">',
-            '<circle fill="none" stroke="#0a1220" stroke-width="12" cx="50" cy="50" r="35"/>',
-            '<circle fill="none" stroke="#1a3a6e" stroke-width="12" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="55" transform="rotate(-90 50 50)" cx="50" cy="50" r="35"/>',
-          '</svg>',
-          '<div class="ft-ring-label"><span class="ft-ring-amount">$1,562</span><span class="ft-ring-pct">+14%</span></div>',
-        '</div>',
-        '<div class="ft-stat-row">',
-          '<div class="ft-stat"><div class="ft-stat-icon green"><svg viewBox="0 0 24 24" stroke="#1a5c2e"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="18" x2="12" y2="6"/></svg></div><div><div class="ft-stat-name">Income</div><div class="ft-stat-val">+$4,245</div></div></div>',
-          '<div class="ft-stat"><div class="ft-stat-icon red"><svg viewBox="0 0 24 24" stroke="#5c1a1a"><polyline points="17 13 12 18 7 13"/><line x1="12" y1="6" x2="12" y2="18"/></svg></div><div><div class="ft-stat-name">Outcome</div><div class="ft-stat-val">−$445</div></div></div>',
-        '</div>',
+        '<div class="ft-chart-ring"><svg viewBox="0 0 100 100" width="90" height="90"><circle fill="none" stroke="#0a1220" stroke-width="12" cx="50" cy="50" r="35"/><circle fill="none" stroke="#1a3a6e" stroke-width="12" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="55" transform="rotate(-90 50 50)" cx="50" cy="50" r="35"/></svg><div class="ft-ring-label"><span class="ft-ring-amount">$1,562</span><span class="ft-ring-pct">+14%</span></div></div>',
+        '<div class="ft-stat-row"><div class="ft-stat"><div class="ft-stat-icon green"><svg viewBox="0 0 24 24" stroke="#1a5c2e"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="18" x2="12" y2="6"/></svg></div><div><div class="ft-stat-name">Income</div><div class="ft-stat-val">+$4,245</div></div></div><div class="ft-stat"><div class="ft-stat-icon red"><svg viewBox="0 0 24 24" stroke="#5c1a1a"><polyline points="17 13 12 18 7 13"/><line x1="12" y1="6" x2="12" y2="18"/></svg></div><div><div class="ft-stat-name">Outcome</div><div class="ft-stat-val">−$445</div></div></div></div>',
         '<div class="ft-tx"><div class="ft-tx-icon">🚲</div><span class="ft-tx-name">Sport — July</span><span class="ft-tx-amount">$321.47</span></div>',
         '<div class="ft-tx"><div class="ft-tx-icon">🚗</div><span class="ft-tx-name">Car Repair</span><span class="ft-tx-amount">$210.03</span></div>',
         '<div class="ft-tx"><div class="ft-tx-icon">📖</div><span class="ft-tx-name">Education</span><span class="ft-tx-amount">$554.12</span></div>',
       '</div>',
       '<div class="ft-panel-mid">',
         '<span class="ft-section-title">Investment</span>',
-        '<div class="ft-invest-grid">',
-          '<div class="ft-invest-card"><div class="ft-invest-pair">ETH/USD</div><div class="ft-invest-val">$4,124.00</div><div class="ft-trend down">↘ −2.1%</div></div>',
-          '<div class="ft-invest-card"><div class="ft-invest-pair">BTC/USD</div><div class="ft-invest-val">$7,124.00</div><div class="ft-trend up">↗ +5.3%</div></div>',
-        '</div>',
+        '<div class="ft-invest-grid"><div class="ft-invest-card"><div class="ft-invest-pair">ETH/USD</div><div class="ft-invest-val">$4,124.00</div><div class="ft-trend down">↘ −2.1%</div></div><div class="ft-invest-card"><div class="ft-invest-pair">BTC/USD</div><div class="ft-invest-val">$7,124.00</div><div class="ft-trend up">↗ +5.3%</div></div></div>',
         '<span class="ft-section-title">Send money to</span>',
-        '<div class="ft-avatars">',
-          '<div class="ft-send-avatar" style="background:linear-gradient(135deg,#7c2d12,#831843)"></div>',
-          '<div class="ft-send-avatar" style="background:linear-gradient(135deg,#1e3a8a,#3b0764)"></div>',
-          '<div class="ft-send-avatar" style="background:linear-gradient(135deg,#14532d,#164e63)"></div>',
-          '<div class="ft-send-avatar add">+</div>',
-        '</div>',
+        '<div class="ft-avatars"><div class="ft-send-avatar" style="background:linear-gradient(135deg,#7c2d12,#831843)"></div><div class="ft-send-avatar" style="background:linear-gradient(135deg,#1e3a8a,#3b0764)"></div><div class="ft-send-avatar" style="background:linear-gradient(135deg,#14532d,#164e63)"></div><div class="ft-send-avatar add">+</div></div>',
         '<div class="ft-card-sel"><span class="ft-visa">VISA</span><span class="ft-card-num">•••• 2233</span></div>',
         '<div class="ft-amount-box"><div class="ft-input-label">Enter the amount</div><div class="ft-input-val">$266</div></div>',
         '<div class="ft-send-btn">Send money</div>',
@@ -135,7 +118,6 @@
     ].join('');
   }
 
-  /* ── Crear capas ── */
   container.style.position = 'relative';
   container.style.overflow = 'hidden';
   container.style.background = '#010408';
@@ -148,7 +130,6 @@
 
   var uiBlur = document.createElement('div');
   uiBlur.className = 'ft-ui-layer';
-  uiBlur.id = 'ft-ui-blur';
   uiBlur.style.zIndex = '2';
   uiBlur.style.filter = 'blur(3px) brightness(0.65)';
   uiBlur.innerHTML = '<div class="ft-dashboard">'+buildDashboard()+'</div>';
@@ -164,35 +145,10 @@
   container.appendChild(glowEl);
 
   var hint = document.createElement('div');
-  hint.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:8;pointer-events:none;transition:opacity 0.8s ease;';
+  hint.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:none;transition:opacity 0.8s ease;';
   hint.innerHTML = '<span style="font-size:12px;color:rgba(255,255,255,0.18);letter-spacing:0.2em;text-transform:uppercase;font-family:inherit;">Mueve el ratón para explorar</span>';
   container.appendChild(hint);
 
-  /* ── Botón personalizar ── */
-  var btn = document.createElement('button');
-  btn.id = 'ft-customize-btn';
-  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.5 2.5l1 1M10.5 10.5l1 1M11.5 2.5l-1 1M3.5 10.5l-1 1" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/></svg><span>Personalizar</span>';
-  container.appendChild(btn);
-
-  var panel = document.createElement('div');
-  panel.id = 'ft-panel';
-  panel.innerHTML = [
-    '<span class="ft-cl">Radio del spotlight</span>',
-    '<div class="ft-cr"><input type="range" id="ft-radius" min="40" max="300" step="10" value="140"><span class="ft-cv" id="ft-vradius">140</span></div>',
-    '<span class="ft-cl">Blur en el spotlight</span>',
-    '<div class="ft-cr"><input type="range" id="ft-blur" min="0" max="24" step="1" value="3"><span class="ft-cv" id="ft-vblur">3</span></div>',
-    '<span class="ft-cl">Organicidad del borde</span>',
-    '<div class="ft-cr"><input type="range" id="ft-organ" min="0" max="50" step="1" value="20"><span class="ft-cv" id="ft-vorgan">20</span></div>',
-    '<span class="ft-cl">Opacidad residual</span>',
-    '<div class="ft-cr"><input type="range" id="ft-residual" min="0" max="70" step="1" value="25"><span class="ft-cv" id="ft-vresidual">25</span></div>',
-    '<span class="ft-cl">Intensidad del glow</span>',
-    '<div class="ft-cr"><input type="range" id="ft-glow-sl" min="0" max="30" step="1" value="10"><span class="ft-cv" id="ft-vglow">10</span></div>',
-    '<div class="ft-divl"></div>',
-    '<button id="ft-reset">Restablecer</button>'
-  ].join('');
-  container.appendChild(panel);
-
-  /* ── Lógica ── */
   var CFG = { radius:140, blur:3, organ:20, residual:25, glowInt:10 };
   var DEFAULTS = JSON.parse(JSON.stringify(CFG));
   var mx=0, my=0, lx=0, ly=0;
@@ -221,77 +177,38 @@
     }
   });
 
-  function draw(){
-    lx+=(mx-lx)*0.06; ly+=(my-ly)*0.06;
-    var W=canvas.width, H=canvas.height;
-    ctx.clearRect(0,0,W,H);
+  /* ── Botón personalizar ── */
+  var btn = document.createElement('button');
+  btn.id = 'ft-customize-btn';
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.5 2.5l1 1M10.5 10.5l1 1M11.5 2.5l-1 1M3.5 10.5l-1 1" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/></svg><span>Personalizar</span>';
 
-    uiBlur.style.filter='blur('+CFG.blur+'px) brightness(0.65)';
+  var panel = document.createElement('div');
+  panel.id = 'ft-panel';
+  panel.innerHTML = [
+    '<span class="ft-cl">Radio del spotlight</span>',
+    '<div class="ft-cr"><input type="range" id="ft-radius" min="40" max="300" step="10" value="140"><span class="ft-cv" id="ft-vradius">140</span></div>',
+    '<span class="ft-cl">Blur en el spotlight</span>',
+    '<div class="ft-cr"><input type="range" id="ft-blur" min="0" max="24" step="1" value="3"><span class="ft-cv" id="ft-vblur">3</span></div>',
+    '<span class="ft-cl">Organicidad del borde</span>',
+    '<div class="ft-cr"><input type="range" id="ft-organ" min="0" max="50" step="1" value="20"><span class="ft-cv" id="ft-vorgan">20</span></div>',
+    '<span class="ft-cl">Opacidad residual</span>',
+    '<div class="ft-cr"><input type="range" id="ft-residual" min="0" max="70" step="1" value="25"><span class="ft-cv" id="ft-vresidual">25</span></div>',
+    '<span class="ft-cl">Intensidad del glow</span>',
+    '<div class="ft-cr"><input type="range" id="ft-glow-sl" min="0" max="30" step="1" value="10"><span class="ft-cv" id="ft-vglow">10</span></div>',
+    '<div class="ft-divl"></div>',
+    '<button id="ft-reset">Restablecer</button>'
+  ].join('');
 
-    if(active||Math.abs(lx-mx)>0.2||Math.abs(ly-my)>0.2){
-      var r=CFG.radius, organ=CFG.organ, POINTS=80;
-
-      ctx.fillStyle='rgba(0,0,0,1)';
-      ctx.fillRect(0,0,W,H);
-
-      ctx.save();
-      ctx.globalCompositeOperation='destination-out';
-      ctx.beginPath();
-      for(var i=0;i<=POINTS;i++){
-        var angle=(i/POINTS)*Math.PI*2;
-        var nx=Math.cos(angle), ny=Math.sin(angle);
-        var d=sNoise(nx*2.5+lx*0.008,ny*2.5+ly*0.008,t)*organ;
-        var rr=r+d;
-        i===0?ctx.moveTo(lx+nx*rr,ly+ny*rr):ctx.lineTo(lx+nx*rr,ly+ny*rr);
-      }
-      ctx.closePath();
-      ctx.fillStyle='rgba(0,0,0,1)';
-      ctx.fill();
-
-      for(var layer=0;layer<16;layer++){
-        var progress=layer/16;
-        var layerR=r+organ*2*progress;
-        ctx.beginPath();
-        for(var i=0;i<=POINTS;i++){
-          var angle=(i/POINTS)*Math.PI*2;
-          var nx=Math.cos(angle), ny=Math.sin(angle);
-          var d=sNoise(nx*2.5+lx*0.008+layer*0.2,ny*2.5+ly*0.008,t+layer*0.08)*organ*(1+progress*0.8);
-          var rr=layerR+d;
-          i===0?ctx.moveTo(lx+nx*rr,ly+ny*rr):ctx.lineTo(lx+nx*rr,ly+ny*rr);
-        }
-        ctx.closePath();
-        ctx.fillStyle='rgba(0,0,0,'+(0.08*(1-progress))+')';
-        ctx.fill();
-      }
-      ctx.restore();
-
-      if(CFG.residual>0){
-        ctx.save();
-        ctx.globalCompositeOperation='source-over';
-        var rg=ctx.createRadialGradient(lx,ly,0,lx,ly,r*1.2);
-        rg.addColorStop(0,'rgba(0,0,0,'+(CFG.residual/100)+')');
-        rg.addColorStop(0.6,'rgba(0,0,0,'+(CFG.residual/200)+')');
-        rg.addColorStop(1,'rgba(0,0,0,0)');
-        ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(lx,ly,r*1.4,0,Math.PI*2); ctx.fill();
-        ctx.restore();
-      }
-
-      var gs=r*3;
-      glowEl.style.width=gs+'px'; glowEl.style.height=gs+'px';
-      glowEl.style.left=lx.toFixed(1)+'px'; glowEl.style.top=ly.toFixed(1)+'px';
-      glowEl.style.background='radial-gradient(circle,rgba(10,20,60,'+(CFG.glowInt/100).toFixed(2)+') 0%,transparent 65%)';
-
-    } else {
-      ctx.fillStyle='rgba(0,0,0,1)';
-      ctx.fillRect(0,0,W,H);
-    }
-
-    t+=0.01;
-    requestAnimationFrame(draw);
+  /* Insertar en contenedor compartido */
+  var heroControls = document.getElementById('hero-controls');
+  if(heroControls){
+    heroControls.insertBefore(btn, heroControls.firstChild);
+  } else {
+    btn.style.cssText += ';position:fixed;bottom:20px;right:20px;z-index:9999;';
+    document.body.appendChild(btn);
   }
-  draw();
+  document.body.appendChild(panel);
 
-  /* Controles */
   var panelOpen=false;
   btn.addEventListener('click',function(){
     panelOpen=!panelOpen;
@@ -317,4 +234,66 @@
     document.getElementById('ft-residual').value=25; document.getElementById('ft-vresidual').textContent='25';
     document.getElementById('ft-glow-sl').value=10;  document.getElementById('ft-vglow').textContent='10';
   });
+
+  /* ── Loop ── */
+  function draw(){
+    lx+=(mx-lx)*0.06; ly+=(my-ly)*0.06;
+    var W=canvas.width, H=canvas.height;
+    ctx.clearRect(0,0,W,H);
+    uiBlur.style.filter='blur('+CFG.blur+'px) brightness(0.65)';
+
+    if(active||Math.abs(lx-mx)>0.2||Math.abs(ly-my)>0.2){
+      var r=CFG.radius, organ=CFG.organ, POINTS=80;
+      ctx.fillStyle='rgba(0,0,0,1)'; ctx.fillRect(0,0,W,H);
+
+      ctx.save();
+      ctx.globalCompositeOperation='destination-out';
+      ctx.beginPath();
+      for(var i=0;i<=POINTS;i++){
+        var angle=(i/POINTS)*Math.PI*2;
+        var nx=Math.cos(angle), ny=Math.sin(angle);
+        var d=sNoise(nx*2.5+lx*0.008,ny*2.5+ly*0.008,t)*organ;
+        var rr=r+d;
+        i===0?ctx.moveTo(lx+nx*rr,ly+ny*rr):ctx.lineTo(lx+nx*rr,ly+ny*rr);
+      }
+      ctx.closePath(); ctx.fillStyle='rgba(0,0,0,1)'; ctx.fill();
+
+      for(var layer=0;layer<16;layer++){
+        var progress=layer/16;
+        var layerR=r+organ*2*progress;
+        ctx.beginPath();
+        for(var i=0;i<=POINTS;i++){
+          var angle=(i/POINTS)*Math.PI*2;
+          var nx=Math.cos(angle), ny=Math.sin(angle);
+          var d=sNoise(nx*2.5+lx*0.008+layer*0.2,ny*2.5+ly*0.008,t+layer*0.08)*organ*(1+progress*0.8);
+          var rr=layerR+d;
+          i===0?ctx.moveTo(lx+nx*rr,ly+ny*rr):ctx.lineTo(lx+nx*rr,ly+ny*rr);
+        }
+        ctx.closePath();
+        ctx.fillStyle='rgba(0,0,0,'+(0.08*(1-progress))+')'; ctx.fill();
+      }
+      ctx.restore();
+
+      if(CFG.residual>0){
+        ctx.save(); ctx.globalCompositeOperation='source-over';
+        var rg=ctx.createRadialGradient(lx,ly,0,lx,ly,r*1.2);
+        rg.addColorStop(0,'rgba(0,0,0,'+(CFG.residual/100)+')');
+        rg.addColorStop(0.6,'rgba(0,0,0,'+(CFG.residual/200)+')');
+        rg.addColorStop(1,'rgba(0,0,0,0)');
+        ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(lx,ly,r*1.4,0,Math.PI*2); ctx.fill();
+        ctx.restore();
+      }
+
+      var gs=r*3;
+      glowEl.style.width=gs+'px'; glowEl.style.height=gs+'px';
+      glowEl.style.left=lx.toFixed(1)+'px'; glowEl.style.top=ly.toFixed(1)+'px';
+      glowEl.style.background='radial-gradient(circle,rgba(10,20,60,'+(CFG.glowInt/100).toFixed(2)+') 0%,transparent 65%)';
+    } else {
+      ctx.fillStyle='rgba(0,0,0,1)'; ctx.fillRect(0,0,W,H);
+    }
+
+    t+=0.01;
+    requestAnimationFrame(draw);
+  }
+  draw();
 })();
