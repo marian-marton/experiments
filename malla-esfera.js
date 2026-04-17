@@ -147,17 +147,8 @@
   btn.id = 'mm-customize-btn';
   btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" stroke="white" stroke-width="1.2"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.5 2.5l1 1M10.5 10.5l1 1M11.5 2.5l-1 1M3.5 10.5l-1 1" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg><span>Personalizar</span>';
 
-  /* Insertar en contenedor compartido */
- document.body.appendChild(panel);
-function insertBtn(){
-  var heroControls = document.getElementById('hero-controls');
-  if(heroControls){
-    heroControls.insertBefore(btn, heroControls.firstChild);
-  } else {
-    setTimeout(insertBtn, 50);
-  }
-}
-insertBtn();
+  container.appendChild(btn);
+document.body.appendChild(panel);
 
   var panelOpen = false;
   btn.addEventListener('click', function(){
