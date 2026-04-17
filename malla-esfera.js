@@ -10,16 +10,7 @@
   var mouse = { x:-9999, y:-9999, active:false };
   var lerpMouse = { x:0, y:0 };
   var t = 0;
-
-  var CFG = {
-    speed:   0.006,
-    radius:  160,
-    size:    1.0,
-    distort: 0.32,
-    green:   { r:188, g:244, b:72  },
-    purple:  { r:138, g:56,  b:245 }
-  };
-  var DEFAULTS = JSON.parse(JSON.stringify(CFG));
+  var INFLUENCE_RADIUS = 160;
 
   var noiseFrames=[], noiseIdx=0, lastNoiseT=0;
   var NOISE_FRAMES=8, NOISE_INTERVAL=50;
@@ -39,6 +30,7 @@
     H=canvas.height=container.offsetHeight;
     cx=W/2; cy=H/2;
     lerpMouse.x=cx; lerpMouse.y=cy;
+    mouse.x=cx; mouse.y=cy;
     prebakeNoise(W,H);
   }
   window.addEventListener('resize',function(){ setTimeout(resize,200); });
@@ -46,7 +38,8 @@
 
   document.addEventListener('mousemove',function(e){
     var r=container.getBoundingClientRect();
-    mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top;
+    mouse.x=e.clientX-r.left;
+    mouse.y=e.clientY-r.top;
     mouse.active=true;
   });
 
@@ -54,7 +47,10 @@
   function lerpF(a,b,t){ return a+t*(b-a); }
   var perm=[];
   for(var i=0;i<256;i++) perm[i]=i;
-  for(var i=255;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var tmp=perm[i]; perm[i]=perm[j]; perm[j]=tmp; }
+  for(var i=255;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=perm[i]; perm[i]=perm[j]; perm[j]=tmp;
+  }
   for(var i=0;i<256;i++) perm[i+256]=perm[i];
   function grad(h,x,y,z){ var hh=h&15,u=hh<8?x:y,v=hh<4?y:hh===12||hh===14?x:z; return ((hh&1)?-u:u)+((hh&2)?-v:v); }
   function noise(x,y,z){
@@ -77,22 +73,45 @@
     }
   }
 
+  var CFG = { speed:0.006, radius:160, size:1.0, distort:0.32, green:{r:188,g:244,b:72}, purple:{r:138,g:56,b:245} };
+  var DEFAULTS = JSON.parse(JSON.stringify(CFG));
+
   function getBase(phi,theta,baseR){
-    var nx=Math.sin(phi)*Math.cos(theta),ny=Math.cos(phi),nz=Math.sin(phi)*Math.sin(theta);
+    var nx=Math.sin(phi)*Math.cos(theta), ny=Math.cos(phi), nz=Math.sin(phi)*Math.sin(theta);
     var n1=noise(nx*1.2+t*0.18,ny*1.2+t*0.14,nz*1.2+t*0.11);
     var n2=noise(nx*2.4-t*0.09,ny*2.4+t*0.07,nz*2.4);
     var n3=noise(nx*4.0+t*0.05,ny*4.0-t*0.12,nz*4.0);
     var organic=n1*0.55+n2*0.30+n3*0.15;
     var r=baseR*(1+organic*CFG.distort);
-    var rotY=t*0.09,cosR=Math.cos(rotY),sinR=Math.sin(rotY);
-    return {
-      x:cx+r*(Math.sin(phi)*Math.cos(theta)*cosR-Math.sin(phi)*Math.sin(theta)*sinR),
-      y:cy+r*Math.cos(phi),
-      z:r*(Math.sin(phi)*Math.cos(theta)*sinR+Math.sin(phi)*Math.sin(theta)*cosR)
-    };
+    var rotY=t*0.09, cosR=Math.cos(rotY), sinR=Math.sin(rotY);
+    var wx=Math.sin(phi)*Math.cos(theta)*cosR-Math.sin(phi)*Math.sin(theta)*sinR;
+    var wy=Math.cos(phi);
+    var wz=Math.sin(phi)*Math.cos(theta)*sinR+Math.sin(phi)*Math.sin(theta)*cosR;
+    return { x:cx+r*wx, y:cy+r*wy, z:r*wz };
   }
 
   /* ── UI ── */
+  var styleEl = document.createElement('style');
+  styleEl.textContent = [
+    '#mm-customize-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:white;font-size:12px;letter-spacing:0.08em;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background 0.3s ease;font-family:inherit;}',
+    '#mm-customize-btn:hover{background:rgba(255,255,255,0.2);}',
+    '#mm-controls-panel{position:fixed;bottom:60px;right:20px;left:auto;z-index:9999;background:rgba(5,5,8,0.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:20px;width:240px;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity 0.3s ease,transform 0.3s ease;font-family:inherit;}',
+    '#mm-controls-panel.visible{opacity:1;transform:translateY(0);pointer-events:all;}',
+    '.mm-cl{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;margin-top:14px;display:block;}',
+    '.mm-cl:first-child{margin-top:0;}',
+    '.mm-cr{display:flex;align-items:center;gap:10px;}',
+    '.mm-cr input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:rgba(255,255,255,0.15);border-radius:999px;outline:none;}',
+    '.mm-cr input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#BCF448;cursor:pointer;}',
+    '.mm-cv{font-size:11px;color:rgba(255,255,255,0.5);min-width:28px;text-align:right;}',
+    '.mm-colors{display:flex;gap:8px;margin-top:6px;}',
+    '.mm-cb{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:border-color 0.2s;}',
+    '.mm-cb.active{border-color:white;}',
+    '.mm-div{height:0.5px;background:rgba(255,255,255,0.1);margin:14px 0;}',
+    '#mm-reset{width:100%;margin-top:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:0.08em;padding:7px;border-radius:999px;cursor:pointer;transition:background 0.2s;font-family:inherit;}',
+    '#mm-reset:hover{background:rgba(255,255,255,0.12);color:white;}'
+  ].join('');
+  document.head.appendChild(styleEl);
+
   var panel = document.createElement('div');
   panel.id = 'mm-controls-panel';
   panel.innerHTML = [
@@ -128,29 +147,15 @@
   btn.id = 'mm-customize-btn';
   btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" stroke="white" stroke-width="1.2"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.5 2.5l1 1M10.5 10.5l1 1M11.5 2.5l-1 1M3.5 10.5l-1 1" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg><span>Personalizar</span>';
 
-  var style = document.createElement('style');
-  style.textContent = [
-    '#mm-customize-btn{position:absolute;bottom:20px;left:20px;z-index:20;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:white;font-size:12px;letter-spacing:0.08em;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background 0.3s ease;font-family:inherit;}',
-    '#mm-customize-btn:hover{background:rgba(255,255,255,0.2);}',
-    '#mm-controls-panel{position:absolute;bottom:60px;left:20px;z-index:20;background:rgba(5,5,8,0.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:20px;width:240px;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity 0.3s ease,transform 0.3s ease;font-family:inherit;}',
-    '#mm-controls-panel.visible{opacity:1;transform:translateY(0);pointer-events:all;}',
-    '.mm-cl{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;margin-top:14px;display:block;}',
-    '.mm-cl:first-child{margin-top:0;}',
-    '.mm-cr{display:flex;align-items:center;gap:10px;}',
-    '.mm-cr input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:rgba(255,255,255,0.15);border-radius:999px;outline:none;}',
-    '.mm-cr input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#BCF448;cursor:pointer;}',
-    '.mm-cv{font-size:11px;color:rgba(255,255,255,0.5);min-width:28px;text-align:right;}',
-    '.mm-colors{display:flex;gap:8px;margin-top:6px;}',
-    '.mm-cb{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:border-color 0.2s;}',
-    '.mm-cb.active{border-color:white;}',
-    '.mm-div{height:0.5px;background:rgba(255,255,255,0.1);margin:14px 0;}',
-    '#mm-reset{width:100%;margin-top:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:0.08em;padding:7px;border-radius:999px;cursor:pointer;transition:background 0.2s;font-family:inherit;}',
-    '#mm-reset:hover{background:rgba(255,255,255,0.12);color:white;}'
-  ].join('');
-
-  document.head.appendChild(style);
-  container.appendChild(btn);
-  container.appendChild(panel);
+  /* Insertar en contenedor compartido */
+  var heroControls = document.getElementById('hero-controls');
+  if(heroControls){
+    heroControls.insertBefore(btn, heroControls.firstChild);
+  } else {
+    btn.style.cssText += ';position:fixed;bottom:20px;right:20px;z-index:9999;';
+    document.body.appendChild(btn);
+  }
+  document.body.appendChild(panel);
 
   var panelOpen = false;
   btn.addEventListener('click', function(){
@@ -183,9 +188,9 @@
 
   document.getElementById('mm-reset').addEventListener('click',function(){
     CFG=JSON.parse(JSON.stringify(DEFAULTS));
-    document.getElementById('mm-speed').value=6;   document.getElementById('mm-vspeed').textContent='6';
+    document.getElementById('mm-speed').value=6;    document.getElementById('mm-vspeed').textContent='6';
     document.getElementById('mm-radius').value=160; document.getElementById('mm-vradius').textContent='160';
-    document.getElementById('mm-size').value=6;    document.getElementById('mm-vsize').textContent='6';
+    document.getElementById('mm-size').value=6;     document.getElementById('mm-vsize').textContent='6';
     document.getElementById('mm-distort').value=8;  document.getElementById('mm-vdistort').textContent='8';
     document.querySelectorAll('.mm-cb').forEach(function(b){ b.classList.remove('active'); });
     document.querySelector('#mm-greens .mm-cb').classList.add('active');
