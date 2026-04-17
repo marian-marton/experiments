@@ -199,17 +199,8 @@
     '<button id="ft-reset">Restablecer</button>'
   ].join('');
 
-  /* Insertar en contenedor compartido */
-  document.body.appendChild(panel);
-function insertBtn(){
-  var heroControls = document.getElementById('hero-controls');
-  if(heroControls){
-    heroControls.insertBefore(btn, heroControls.firstChild);
-  } else {
-    setTimeout(insertBtn, 50);
-  }
-}
-insertBtn();
+ container.appendChild(btn);
+document.body.appendChild(panel);
 
   var panelOpen=false;
   btn.addEventListener('click',function(){
