@@ -200,14 +200,16 @@
   ].join('');
 
   /* Insertar en contenedor compartido */
+  document.body.appendChild(panel);
+function insertBtn(){
   var heroControls = document.getElementById('hero-controls');
   if(heroControls){
     heroControls.insertBefore(btn, heroControls.firstChild);
   } else {
-    btn.style.cssText += ';position:fixed;bottom:20px;right:20px;z-index:9999;';
-    document.body.appendChild(btn);
+    setTimeout(insertBtn, 50);
   }
-  document.body.appendChild(panel);
+}
+insertBtn();
 
   var panelOpen=false;
   btn.addEventListener('click',function(){
