@@ -174,7 +174,7 @@
   var uiBlur = document.createElement('div');
   uiBlur.className = 'ft-ui-layer';
   uiBlur.style.zIndex = '2';
-  uiBlur.style.filter = 'blur(3px) brightness(0.65)';
+  uiBlur.style.filter = 'blur(0px) brightness(0.65)';
   uiBlur.innerHTML = '<div class="ft-dashboard">'+buildDashboard()+'</div>';
   container.appendChild(uiBlur);
 
@@ -192,7 +192,7 @@
   hint.innerHTML = '<span style="font-size:12px;color:rgba(255,255,255,0.18);letter-spacing:0.2em;text-transform:uppercase;font-family:inherit;">Mueve el ratón para explorar</span>';
   container.appendChild(hint);
 
-  var CFG = { radius:140, blur:3, organ:20, residual:25, glowInt:10 };
+  var CFG = { radius:140, blur:0, organ:20, residual:40, glowInt:10 };
   var DEFAULTS = JSON.parse(JSON.stringify(CFG));
   var mx=0, my=0, lx=0, ly=0;
   var active=false, hintGone=false, t=0;
@@ -230,11 +230,11 @@
     '<span class="ft-cl">Radio del spotlight</span>',
     '<div class="ft-cr"><input type="range" id="ft-radius" min="40" max="300" step="10" value="140"><span class="ft-cv" id="ft-vradius">140</span></div>',
     '<span class="ft-cl">Blur en el spotlight</span>',
-    '<div class="ft-cr"><input type="range" id="ft-blur" min="0" max="24" step="1" value="3"><span class="ft-cv" id="ft-vblur">3</span></div>',
+    '<div class="ft-cr"><input type="range" id="ft-blur" min="0" max="24" step="1" value="0"><span class="ft-cv" id="ft-vblur">0</span></div>',
     '<span class="ft-cl">Organicidad del borde</span>',
     '<div class="ft-cr"><input type="range" id="ft-organ" min="0" max="50" step="1" value="20"><span class="ft-cv" id="ft-vorgan">20</span></div>',
     '<span class="ft-cl">Opacidad residual</span>',
-    '<div class="ft-cr"><input type="range" id="ft-residual" min="0" max="70" step="1" value="25"><span class="ft-cv" id="ft-vresidual">25</span></div>',
+    '<div class="ft-cr"><input type="range" id="ft-residual" min="0" max="70" step="1" value="40"><span class="ft-cv" id="ft-vresidual">40</span></div>',
     '<span class="ft-cl">Intensidad del glow</span>',
     '<div class="ft-cr"><input type="range" id="ft-glow-sl" min="0" max="30" step="1" value="10"><span class="ft-cv" id="ft-vglow">10</span></div>',
     '<div class="ft-divl"></div>',
@@ -257,9 +257,9 @@
   document.getElementById('ft-reset').addEventListener('click',function(){
     CFG=JSON.parse(JSON.stringify(DEFAULTS));
     document.getElementById('ft-radius').value=140;  document.getElementById('ft-vradius').textContent='140';
-    document.getElementById('ft-blur').value=3;      document.getElementById('ft-vblur').textContent='3';
+    document.getElementById('ft-blur').value=0;      document.getElementById('ft-vblur').textContent='0';
     document.getElementById('ft-organ').value=20;    document.getElementById('ft-vorgan').textContent='20';
-    document.getElementById('ft-residual').value=25; document.getElementById('ft-vresidual').textContent='25';
+    document.getElementById('ft-residual').value=40; document.getElementById('ft-vresidual').textContent='40';
     document.getElementById('ft-glow-sl').value=10;  document.getElementById('ft-vglow').textContent='10';
   });
 
