@@ -5,115 +5,227 @@
   var style = document.createElement('style');
   style.textContent = [
     '.ft-ui-layer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:#010408;}',
-    '.ft-dashboard{width:100%;max-width:960px;height:540px;background:#060c14;border-radius:16px;display:grid;grid-template-columns:56px 1fr 1fr 1fr;grid-template-rows:56px 1fr 1fr;overflow:hidden;border:1px solid rgba(255,255,255,0.04);}',
-    '.ft-sidebar{grid-row:1/4;background:#060c14;border-right:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:20px;}',
-    '.ft-logo{width:28px;height:28px;background:linear-gradient(135deg,#1a3a6e,#0d1f3c);border-radius:6px;display:flex;align-items:center;justify-content:center;}',
-    '.ft-nav-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;opacity:0.3;}',
-    '.ft-nav-icon.active{background:rgba(20,50,100,0.3);opacity:0.8;}',
-    '.ft-nav-icon svg,.ft-header svg{width:16px;height:16px;stroke:rgba(255,255,255,0.6);fill:none;stroke-width:1.5;}',
+    '.ft-dashboard{width:100%;max-width:960px;height:540px;background:#060c14;border-radius:16px;display:grid;grid-template-columns:56px 1fr 1fr 1fr;grid-template-rows:56px 1fr 1fr;overflow:hidden;border:1px solid rgba(255,255,255,0.06);}',
+    '.ft-sidebar{grid-row:1/4;background:#060c14;border-right:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:20px;}',
+    '.ft-logo{width:28px;height:28px;background:linear-gradient(135deg,#2a4a8e,#1a3a6e);border-radius:6px;display:flex;align-items:center;justify-content:center;}',
+    '.ft-nav-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;opacity:0.35;}',
+    '.ft-nav-icon.active{background:rgba(59,130,246,0.2);opacity:1;}',
+    '.ft-nav-icon svg,.ft-header svg{width:16px;height:16px;stroke:rgba(255,255,255,0.7);fill:none;stroke-width:1.5;}',
     '.ft-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#7c2d12,#831843);margin-top:auto;}',
-    '.ft-header{grid-column:2/5;background:#060c14;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:flex-end;padding:0 20px;gap:16px;}',
-    '.ft-panel-left{grid-row:2/4;background:#060c14;border-right:1px solid rgba(255,255,255,0.04);padding:16px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}',
-    '.ft-section-title{font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);}',
-    '.ft-chart-ring{width:90px;height:90px;margin:0 auto;position:relative;}',
-    '.ft-ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}',
-    '.ft-ring-amount{font-size:10px;font-weight:700;color:rgba(255,255,255,0.7);}',
-    '.ft-ring-pct{font-size:8px;color:#1a5c2e;}',
+    '.ft-header{grid-column:2/5;background:#060c14;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:flex-end;padding:0 20px;gap:16px;}',
+
+    /* Panel izquierdo */
+    '.ft-panel-left{grid-row:2/4;background:#060c14;border-right:1px solid rgba(255,255,255,0.06);padding:16px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}',
+    '.ft-section-title{font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);}',
+
+    /* Balance principal */
+    '.ft-balance-main{background:linear-gradient(135deg,#0d1f3c,#0a1628);border-radius:10px;padding:12px;border:1px solid rgba(59,130,246,0.15);}',
+    '.ft-balance-label{font-size:8px;color:rgba(255,255,255,0.4);margin-bottom:4px;}',
+    '.ft-balance-amount{font-size:18px;font-weight:700;color:white;}',
+    '.ft-balance-change{font-size:9px;color:#22c55e;margin-top:2px;}',
+
+    /* Gráfico de barras */
+    '.ft-chart{width:100%;height:80px;margin:4px 0;}',
+
+    /* Stats */
     '.ft-stat-row{display:flex;gap:6px;}',
     '.ft-stat{flex:1;background:#0a1220;border-radius:8px;padding:7px;display:flex;align-items:center;gap:5px;}',
     '.ft-stat-icon{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}',
-    '.ft-stat-icon.green{background:rgba(20,80,40,0.3);}',
-    '.ft-stat-icon.red{background:rgba(80,20,20,0.3);}',
+    '.ft-stat-icon.green{background:rgba(34,197,94,0.15);}',
+    '.ft-stat-icon.red{background:rgba(239,68,68,0.15);}',
     '.ft-stat-icon svg{width:10px;height:10px;fill:none;stroke-width:2;}',
-    '.ft-stat-name{font-size:7px;color:rgba(255,255,255,0.25);}',
-    '.ft-stat-val{font-size:9px;font-weight:600;color:rgba(255,255,255,0.6);}',
-    '.ft-tx{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.03);}',
-    '.ft-tx-icon{width:18px;height:18px;border-radius:50%;background:#0a1220;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;}',
-    '.ft-tx-name{font-size:8px;color:rgba(255,255,255,0.4);flex:1;}',
-    '.ft-tx-amount{font-size:8px;color:rgba(255,255,255,0.35);}',
-    '.ft-panel-mid{background:#060c14;border-right:1px solid rgba(255,255,255,0.04);padding:16px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}',
+    '.ft-stat-name{font-size:7px;color:rgba(255,255,255,0.3);}',
+    '.ft-stat-val{font-size:9px;font-weight:600;color:rgba(255,255,255,0.8);}',
+
+    /* Transacciones */
+    '.ft-tx{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);}',
+    '.ft-tx-icon{width:20px;height:20px;border-radius:6px;background:#0a1220;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}',
+    '.ft-tx-name{font-size:8px;color:rgba(255,255,255,0.6);flex:1;}',
+    '.ft-tx-amount{font-size:8px;font-weight:600;color:rgba(255,255,255,0.5);}',
+
+    /* Panel central */
+    '.ft-panel-mid{background:#060c14;border-right:1px solid rgba(255,255,255,0.06);padding:16px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}',
     '.ft-invest-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}',
-    '.ft-invest-card{background:#0a1220;border-radius:8px;padding:8px;}',
-    '.ft-invest-pair{font-size:8px;color:rgba(255,255,255,0.25);margin-bottom:3px;}',
-    '.ft-invest-val{font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);}',
-    '.ft-trend{font-size:7px;}.ft-trend.up{color:#1a5c2e;}.ft-trend.down{color:#5c1a1a;}',
-    '.ft-avatars{display:flex;gap:5px;}',
-    '.ft-send-avatar{width:24px;height:24px;border-radius:50%;border:1.5px solid #060c14;}',
-    '.ft-send-avatar.add{background:#0a1220;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(255,255,255,0.2);}',
-    '.ft-card-sel{background:#0a1220;border-radius:7px;padding:6px 8px;display:flex;align-items:center;gap:6px;}',
-    '.ft-visa{font-size:8px;font-weight:800;color:rgba(255,255,255,0.5);}',
-    '.ft-card-num{font-size:8px;color:rgba(255,255,255,0.2);flex:1;}',
-    '.ft-amount-box{background:#0a1220;border-radius:7px;padding:8px;}',
-    '.ft-input-label{font-size:7px;color:rgba(255,255,255,0.2);margin-bottom:2px;}',
-    '.ft-input-val{font-size:14px;font-weight:700;color:rgba(255,255,255,0.6);}',
-    '.ft-send-btn{background:#0d2244;border-radius:7px;padding:7px;text-align:center;font-size:9px;font-weight:600;color:rgba(255,255,255,0.4);}',
+    '.ft-invest-card{background:#0a1220;border-radius:8px;padding:10px;border:1px solid rgba(255,255,255,0.04);}',
+    '.ft-invest-pair{font-size:8px;color:rgba(255,255,255,0.35);margin-bottom:3px;}',
+    '.ft-invest-val{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}',
+    '.ft-trend{font-size:7px;margin-top:2px;}',
+    '.ft-trend.up{color:#22c55e;}.ft-trend.down{color:#ef4444;}',
+    '.ft-sparkline{margin-top:6px;}',
+
+    /* Donut chart */
+    '.ft-donut-wrap{display:flex;align-items:center;gap:12px;background:#0a1220;border-radius:8px;padding:10px;}',
+    '.ft-donut-info{flex:1;}',
+    '.ft-donut-pct{font-size:14px;font-weight:700;color:white;}',
+    '.ft-donut-label{font-size:8px;color:rgba(255,255,255,0.3);}',
+    '.ft-donut-items{display:flex;flex-direction:column;gap:3px;margin-top:4px;}',
+    '.ft-donut-item{display:flex;align-items:center;gap:4px;font-size:7px;color:rgba(255,255,255,0.5);}',
+    '.ft-donut-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}',
+
+    /* Panel derecho */
     '.ft-panel-right{background:#060c14;padding:16px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}',
-    '.ft-card-visual{background:linear-gradient(135deg,#0a1a2e,#060e1c);border-radius:10px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;height:90px;border:1px solid rgba(255,255,255,0.04);}',
-    '.ft-visa-logo{font-size:12px;font-weight:800;color:rgba(255,255,255,0.4);font-style:italic;}',
-    '.ft-card-dots{font-size:8px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;}',
-    '.ft-card-exp{font-size:7px;color:rgba(255,255,255,0.2);}',
-    '.ft-balance{font-size:16px;font-weight:700;color:rgba(255,255,255,0.55);text-align:center;}',
-    '.ft-activity{display:flex;align-items:center;gap:6px;margin-bottom:4px;}',
-    '.ft-act-icon{width:20px;height:20px;border-radius:5px;flex-shrink:0;opacity:0.5;}',
-    '.ft-act-name{font-size:8px;color:rgba(255,255,255,0.45);font-weight:500;}',
-    '.ft-act-sub{font-size:7px;color:rgba(255,255,255,0.2);}',
-    '.ft-act-amount{font-size:8px;color:rgba(255,255,255,0.3);margin-left:auto;}',
-    '#ft-customize-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:12px;letter-spacing:0.08em;padding:8px 16px;border-radius:999px;cursor:pointer;font-family:inherit;transition:background 0.3s;}',
-    '#ft-customize-btn:hover{background:rgba(255,255,255,0.1);}',
-    '#ft-panel{position:fixed;bottom:60px;right:20px;left:auto;z-index:9999;background:rgba(1,4,8,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;width:240px;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity 0.3s,transform 0.3s;font-family:inherit;}',
-    '#ft-panel.visible{opacity:1;transform:translateY(0);pointer-events:all;}',
-    '.ft-cl{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;margin-top:14px;display:block;}',
-    '.ft-cl:first-child{margin-top:0;}',
-    '.ft-cr{display:flex;align-items:center;gap:10px;}',
-    '.ft-cr input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:rgba(255,255,255,0.08);border-radius:999px;outline:none;}',
-    '.ft-cr input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#1a3a6e;cursor:pointer;}',
-    '.ft-cv{font-size:11px;color:rgba(255,255,255,0.3);min-width:32px;text-align:right;}',
-    '.ft-divl{height:0.5px;background:rgba(255,255,255,0.06);margin:14px 0;}',
-    '#ft-reset{width:100%;margin-top:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:0.08em;padding:7px;border-radius:999px;cursor:pointer;font-family:inherit;transition:background 0.2s;}',
-    '#ft-reset:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);}'
+    '.ft-card-visual{background:linear-gradient(135deg,#0d1f3c,#060e1c);border-radius:12px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;height:100px;border:1px solid rgba(59,130,246,0.2);}',
+    '.ft-visa-logo{font-size:13px;font-weight:800;color:rgba(255,255,255,0.6);font-style:italic;}',
+    '.ft-card-dots{font-size:8px;color:rgba(255,255,255,0.4);letter-spacing:0.12em;}',
+    '.ft-card-exp{font-size:7px;color:rgba(255,255,255,0.25);}',
+    '.ft-total-balance{text-align:center;}',
+    '.ft-total-label{font-size:8px;color:rgba(255,255,255,0.3);}',
+    '.ft-total-amount{font-size:18px;font-weight:700;color:white;}',
+    '.ft-activity{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);}',
+    '.ft-act-icon{width:22px;height:22px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}',
+    '.ft-act-name{font-size:8px;color:rgba(255,255,255,0.7);font-weight:500;}',
+    '.ft-act-sub{font-size:7px;color:rgba(255,255,255,0.25);}',
+    '.ft-act-amount{font-size:8px;color:rgba(255,255,255,0.45);margin-left:auto;}',
   ].join('');
   document.head.appendChild(style);
+
+  /* ── Gráfico de barras SVG ── */
+  function buildBarChart(){
+    var bars = [40,65,45,80,55,90,70,85,60,75,50,88];
+    var W = 160, H = 60, pad = 2;
+    var bw = (W - pad*(bars.length-1)) / bars.length;
+    var rects = bars.map(function(v,i){
+      var h = (v/100)*H;
+      var x = i*(bw+pad);
+      var y = H-h;
+      var color = v === Math.max.apply(null,bars) ? '#3b82f6' : 'rgba(59,130,246,0.3)';
+      return '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" rx="2" fill="'+color+'"/>';
+    }).join('');
+    /* Línea encima */
+    var points = bars.map(function(v,i){
+      var x = i*(bw+pad) + bw/2;
+      var y = H - (v/100)*H;
+      return x.toFixed(1)+','+y.toFixed(1);
+    }).join(' ');
+    var line = '<polyline points="'+points+'" fill="none" stroke="rgba(99,179,237,0.6)" stroke-width="1.2" stroke-linejoin="round"/>';
+    var labels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(function(l,i){
+      var x = i*2*(bw+pad) + bw/2;
+      return '<text x="'+x.toFixed(1)+'" y="'+(H+10)+'" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">'+l+'</text>';
+    }).join('');
+    return '<svg viewBox="0 0 '+W+' '+(H+14)+'" width="100%" style="display:block;">'+rects+line+labels+'</svg>';
+  }
+
+  /* ── Sparkline SVG ── */
+  function buildSparkline(vals, color){
+    var W=60, H=20;
+    var max=Math.max.apply(null,vals), min=Math.min.apply(null,vals);
+    var pts=vals.map(function(v,i){
+      var x=(i/(vals.length-1))*W;
+      var y=H-((v-min)/(max-min||1))*H;
+      return x.toFixed(1)+','+y.toFixed(1);
+    }).join(' ');
+    return '<svg viewBox="0 0 '+W+' '+H+'" width="60" height="20"><polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+  }
+
+  /* ── Donut SVG ── */
+  function buildDonut(){
+    var r=22, cx=26, cy=26, circ=2*Math.PI*r;
+    var segs=[
+      {pct:0.5047,color:'#3b82f6'},
+      {pct:0.28,color:'#22c55e'},
+      {pct:0.215,color:'#8b5cf6'}
+    ];
+    var offset=0;
+    var paths=segs.map(function(s){
+      var dash=s.pct*circ;
+      var gap=circ-dash;
+      var p='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+s.color+'" stroke-width="6" stroke-dasharray="'+dash.toFixed(2)+' '+gap.toFixed(2)+'" stroke-dashoffset="'+(-offset*circ).toFixed(2)+'" transform="rotate(-90 '+cx+' '+cy+')"/>';
+      offset+=s.pct;
+      return p;
+    }).join('');
+    return '<svg viewBox="0 0 52 52" width="52" height="52"><circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>'+paths+'</svg>';
+  }
 
   function buildDashboard(){
     return [
       '<div class="ft-sidebar">',
-        '<div class="ft-logo"><svg viewBox="0 0 16 16"><path d="M8 2L14 12H2L8 2Z" fill="rgba(255,255,255,0.6)"/></svg></div>',
+        '<div class="ft-logo"><svg viewBox="0 0 16 16"><path d="M8 2L14 12H2L8 2Z" fill="rgba(255,255,255,0.8)"/></svg></div>',
         '<div class="ft-nav-icon active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>',
         '<div class="ft-nav-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>',
         '<div class="ft-nav-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>',
         '<div class="ft-nav-icon"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>',
-        '<div class="ft-nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>',
+        '<div class="ft-nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>',
         '<div class="ft-avatar"></div>',
       '</div>',
+
       '<div class="ft-header">',
         '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
         '<svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>',
       '</div>',
+
+      /* Panel izquierdo */
       '<div class="ft-panel-left">',
-        '<span class="ft-section-title">Income & Expenses</span>',
-        '<div class="ft-chart-ring"><svg viewBox="0 0 100 100" width="90" height="90"><circle fill="none" stroke="#0a1220" stroke-width="12" cx="50" cy="50" r="35"/><circle fill="none" stroke="#1a3a6e" stroke-width="12" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="55" transform="rotate(-90 50 50)" cx="50" cy="50" r="35"/></svg><div class="ft-ring-label"><span class="ft-ring-amount">$1,562</span><span class="ft-ring-pct">+14%</span></div></div>',
-        '<div class="ft-stat-row"><div class="ft-stat"><div class="ft-stat-icon green"><svg viewBox="0 0 24 24" stroke="#1a5c2e"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="18" x2="12" y2="6"/></svg></div><div><div class="ft-stat-name">Income</div><div class="ft-stat-val">+$4,245</div></div></div><div class="ft-stat"><div class="ft-stat-icon red"><svg viewBox="0 0 24 24" stroke="#5c1a1a"><polyline points="17 13 12 18 7 13"/><line x1="12" y1="6" x2="12" y2="18"/></svg></div><div><div class="ft-stat-name">Outcome</div><div class="ft-stat-val">−$445</div></div></div></div>',
+        '<span class="ft-section-title">Investment Overview</span>',
+        '<div class="ft-balance-main">',
+          '<div class="ft-balance-label">Current Balance</div>',
+          '<div class="ft-balance-amount">$4,124.00</div>',
+          '<div class="ft-balance-change">▲ 773%</div>',
+        '</div>',
+        '<div class="ft-chart">'+buildBarChart()+'</div>',
+        '<div class="ft-stat-row">',
+          '<div class="ft-stat"><div class="ft-stat-icon green"><svg viewBox="0 0 24 24" stroke="#22c55e"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="18" x2="12" y2="6"/></svg></div><div><div class="ft-stat-name">Income</div><div class="ft-stat-val">+$4,245</div></div></div>',
+          '<div class="ft-stat"><div class="ft-stat-icon red"><svg viewBox="0 0 24 24" stroke="#ef4444"><polyline points="17 13 12 18 7 13"/><line x1="12" y1="6" x2="12" y2="18"/></svg></div><div><div class="ft-stat-name">Outcome</div><div class="ft-stat-val">−$445</div></div></div>',
+        '</div>',
         '<div class="ft-tx"><div class="ft-tx-icon">🚲</div><span class="ft-tx-name">Sport — July</span><span class="ft-tx-amount">$321.47</span></div>',
         '<div class="ft-tx"><div class="ft-tx-icon">🚗</div><span class="ft-tx-name">Car Repair</span><span class="ft-tx-amount">$210.03</span></div>',
         '<div class="ft-tx"><div class="ft-tx-icon">📖</div><span class="ft-tx-name">Education</span><span class="ft-tx-amount">$554.12</span></div>',
       '</div>',
+
+      /* Panel central */
       '<div class="ft-panel-mid">',
-        '<span class="ft-section-title">Investment</span>',
-        '<div class="ft-invest-grid"><div class="ft-invest-card"><div class="ft-invest-pair">ETH/USD</div><div class="ft-invest-val">$4,124.00</div><div class="ft-trend down">↘ −2.1%</div></div><div class="ft-invest-card"><div class="ft-invest-pair">BTC/USD</div><div class="ft-invest-val">$7,124.00</div><div class="ft-trend up">↗ +5.3%</div></div></div>',
-        '<span class="ft-section-title">Send money to</span>',
-        '<div class="ft-avatars"><div class="ft-send-avatar" style="background:linear-gradient(135deg,#7c2d12,#831843)"></div><div class="ft-send-avatar" style="background:linear-gradient(135deg,#1e3a8a,#3b0764)"></div><div class="ft-send-avatar" style="background:linear-gradient(135deg,#14532d,#164e63)"></div><div class="ft-send-avatar add">+</div></div>',
-        '<div class="ft-card-sel"><span class="ft-visa">VISA</span><span class="ft-card-num">•••• 2233</span></div>',
-        '<div class="ft-amount-box"><div class="ft-input-label">Enter the amount</div><div class="ft-input-val">$266</div></div>',
-        '<div class="ft-send-btn">Send money</div>',
+        '<span class="ft-section-title">Markets</span>',
+        '<div class="ft-invest-grid">',
+          '<div class="ft-invest-card">',
+            '<div class="ft-invest-pair">ETH/USD</div>',
+            '<div class="ft-invest-val">$4,124.00</div>',
+            '<div class="ft-trend down">↘ −2.1%</div>',
+            '<div class="ft-sparkline">'+buildSparkline([60,55,58,50,45,48,42,44,40],'#ef4444')+'</div>',
+          '</div>',
+          '<div class="ft-invest-card">',
+            '<div class="ft-invest-pair">BTC/USD</div>',
+            '<div class="ft-invest-val">$7,124.00</div>',
+            '<div class="ft-trend up">↗ +5.3%</div>',
+            '<div class="ft-sparkline">'+buildSparkline([40,45,42,50,55,52,60,58,65],'#22c55e')+'</div>',
+          '</div>',
+        '</div>',
+        '<span class="ft-section-title">Portfolio</span>',
+        '<div class="ft-donut-wrap">',
+          buildDonut(),
+          '<div class="ft-donut-info">',
+            '<div class="ft-donut-pct">5047%</div>',
+            '<div class="ft-donut-label">Total return</div>',
+            '<div class="ft-donut-items">',
+              '<div class="ft-donut-item"><div class="ft-donut-dot" style="background:#3b82f6"></div>BTC 50.5%</div>',
+              '<div class="ft-donut-item"><div class="ft-donut-dot" style="background:#22c55e"></div>ETH 28.0%</div>',
+              '<div class="ft-donut-item"><div class="ft-donut-dot" style="background:#8b5cf6"></div>Other 21.5%</div>',
+            '</div>',
+          '</div>',
+        '</div>',
+        '<div class="ft-tx"><div class="ft-tx-icon">📈</div><span class="ft-tx-name">Nobut Thriva</span><span class="ft-tx-amount" style="color:#22c55e">+3000%</span></div>',
+        '<div class="ft-tx"><div class="ft-tx-icon">💹</div><span class="ft-tx-name">$1,688.30</span><span class="ft-tx-amount" style="color:#22c55e">+3000%</span></div>',
       '</div>',
+
+      /* Panel derecho */
       '<div class="ft-panel-right">',
-        '<span class="ft-section-title">My cards</span>',
-        '<div class="ft-card-visual"><span class="ft-visa-logo">VISA</span><div><div class="ft-card-dots">•••• •••• •••• 2233</div><div class="ft-card-exp">07 / 2023</div></div></div>',
-        '<div class="ft-balance">$8,244.00</div>',
+        '<div style="display:flex;align-items:center;justify-content:space-between;"><span class="ft-section-title">My cards</span><span style="font-size:16px;color:rgba(255,255,255,0.2);">···</span></div>',
+        '<div class="ft-card-visual">',
+          '<div style="display:flex;align-items:center;justify-content:space-between;">',
+            '<span class="ft-visa-logo">VISA</span>',
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>',
+          '</div>',
+          '<div>',
+            '<div class="ft-card-dots">•••• •••• •••• 2233</div>',
+            '<div class="ft-card-exp">07 / 2023</div>',
+          '</div>',
+        '</div>',
+        '<div class="ft-total-balance">',
+          '<div class="ft-total-label">Total balance</div>',
+          '<div class="ft-total-amount">$8,244.00</div>',
+        '</div>',
         '<span class="ft-section-title">Recent Activities</span>',
-        '<div class="ft-activity"><div class="ft-act-icon" style="background:#1db954"></div><div><div class="ft-act-name">Spotify</div><div class="ft-act-sub">Music Platform</div></div><span class="ft-act-amount">−$24.00</span></div>',
-        '<div class="ft-activity"><div class="ft-act-icon" style="background:#0061fe"></div><div><div class="ft-act-name">Dropbox</div><div class="ft-act-sub">Storage</div></div><span class="ft-act-amount">−$78.12</span></div>',
-        '<div class="ft-activity"><div class="ft-act-icon" style="background:#111;border:1px solid #1a2030"></div><div><div class="ft-act-name">Nike</div><div class="ft-act-sub">Sport</div></div><span class="ft-act-amount">−$50.00</span></div>',
+        '<div class="ft-activity"><div class="ft-act-icon" style="background:rgba(29,185,84,0.15)"><svg width="12" height="12" viewBox="0 0 24 24" fill="#1db954"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="ft-act-name">Spotify</div><div class="ft-act-sub">Music Platform</div></div><span class="ft-act-amount">−$24.00</span></div>',
+        '<div class="ft-activity"><div class="ft-act-icon" style="background:rgba(0,97,254,0.15)"><svg width="12" height="12" viewBox="0 0 24 24" fill="#0061fe"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="ft-act-name">Dropbox</div><div class="ft-act-sub">Storage</div></div><span class="ft-act-amount">−$78.12</span></div>',
+        '<div class="ft-activity"><div class="ft-act-icon" style="background:rgba(255,255,255,0.06)"><svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="ft-act-name">Nike</div><div class="ft-act-sub">Sport</div></div><span class="ft-act-amount">−$50.00</span></div>',
       '</div>'
     ].join('');
   }
@@ -126,11 +238,6 @@
   uiSharp.className = 'ft-ui-layer';
   uiSharp.style.zIndex = '1';
   uiSharp.innerHTML = '<div class="ft-dashboard">'+buildDashboard()+'</div>';
-  container.style.position = 'absolute';
-  container.style.inset = '0';
-  container.style.width = '100%';
-  container.style.height = '100%';
-  container.style.zIndex = '0';
   container.appendChild(uiSharp);
 
   var uiBlur = document.createElement('div');
@@ -182,7 +289,6 @@
     }
   });
 
-  /* ── Botón personalizar ── */
   var btn = document.createElement('button');
   btn.id = 'ft-customize-btn';
   btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.5 2.5l1 1M10.5 10.5l1 1M11.5 2.5l-1 1M3.5 10.5l-1 1" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/></svg><span>Personalizar</span>';
@@ -204,15 +310,8 @@
     '<button id="ft-reset">Restablecer</button>'
   ].join('');
 
- container.appendChild(btn);
-document.body.appendChild(panel);
-
-  var panelOpen=false;
-  btn.addEventListener('click',function(){
-    panelOpen=!panelOpen;
-    panel.classList.toggle('visible',panelOpen);
-    btn.querySelector('span').textContent=panelOpen?'Cerrar':'Personalizar';
-  });
+  container.appendChild(btn);
+  document.body.appendChild(panel);
 
   function bind(id,vid,key){
     var sl=document.getElementById(id),vl=document.getElementById(vid);
@@ -233,7 +332,6 @@ document.body.appendChild(panel);
     document.getElementById('ft-glow-sl').value=10;  document.getElementById('ft-vglow').textContent='10';
   });
 
-  /* ── Loop ── */
   function draw(){
     lx+=(mx-lx)*0.06; ly+=(my-ly)*0.06;
     var W=canvas.width, H=canvas.height;
