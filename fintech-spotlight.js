@@ -7,6 +7,7 @@
   container.style.width = '100%';
   container.style.height = '100%';
   container.style.zIndex = '0';
+  container.style.background = '#010408';
 
   var style = document.createElement('style');
   style.textContent = [
@@ -66,6 +67,18 @@
     '.ft-act-name{font-size:8px;color:rgba(255,255,255,0.7);font-weight:500;}',
     '.ft-act-sub{font-size:7px;color:rgba(255,255,255,0.25);}',
     '.ft-act-amount{font-size:8px;color:rgba(255,255,255,0.45);margin-left:auto;}',
+    '#ft-customize-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:white;font-size:12px;letter-spacing:0.08em;padding:8px 16px;border-radius:999px;cursor:pointer;font-family:inherit;transition:background 0.3s;}',
+    '#ft-customize-btn:hover{background:rgba(255,255,255,0.2);}',
+    '#ft-panel{background:rgba(5,5,8,0.92);border:1px solid rgba(255,255,255,0.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:16px;padding:20px;width:240px;font-family:inherit;color:white;}',
+    '.ft-cl{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;margin-top:14px;display:block;}',
+    '.ft-cl:first-child{margin-top:0;}',
+    '.ft-cr{display:flex;align-items:center;gap:10px;}',
+    '.ft-cr input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:rgba(255,255,255,0.15);border-radius:999px;outline:none;}',
+    '.ft-cr input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#BCF448;cursor:pointer;}',
+    '.ft-cv{font-size:11px;color:rgba(255,255,255,0.5);min-width:28px;text-align:right;}',
+    '.ft-divl{height:0.5px;background:rgba(255,255,255,0.1);margin:14px 0;}',
+    '#ft-reset{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:0.08em;padding:7px;border-radius:999px;cursor:pointer;font-family:inherit;}',
+    '#ft-reset:hover{background:rgba(255,255,255,0.12);color:white;}'
   ].join('');
   document.head.appendChild(style);
 
@@ -75,33 +88,25 @@
     var bw=(W-pad*(bars.length-1))/bars.length;
     var max=Math.max.apply(null,bars);
     var rects=bars.map(function(v,i){
-      var h=(v/100)*H, x=i*(bw+pad), y=H-h;
-      var color=v===max?'#3b82f6':'rgba(59,130,246,0.3)';
-      return '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" rx="2" fill="'+color+'"/>';
+      var h=(v/100)*H,x=i*(bw+pad),y=H-h;
+      return '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" rx="2" fill="'+(v===max?'#3b82f6':'rgba(59,130,246,0.3)')+'"/>';
     }).join('');
-    var points=bars.map(function(v,i){
-      return (i*(bw+pad)+bw/2).toFixed(1)+','+(H-(v/100)*H).toFixed(1);
-    }).join(' ');
-    var line='<polyline points="'+points+'" fill="none" stroke="rgba(99,179,237,0.6)" stroke-width="1.2" stroke-linejoin="round"/>';
+    var points=bars.map(function(v,i){ return (i*(bw+pad)+bw/2).toFixed(1)+','+(H-(v/100)*H).toFixed(1); }).join(' ');
     var labels=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(function(l,i){
       return '<text x="'+(i*2*(bw+pad)+bw/2).toFixed(1)+'" y="'+(H+10)+'" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">'+l+'</text>';
     }).join('');
-    return '<svg viewBox="0 0 '+W+' '+(H+14)+'" width="100%" style="display:block;">'+rects+line+labels+'</svg>';
+    return '<svg viewBox="0 0 '+W+' '+(H+14)+'" width="100%" style="display:block;">'+rects+'<polyline points="'+points+'" fill="none" stroke="rgba(99,179,237,0.6)" stroke-width="1.2" stroke-linejoin="round"/>'+labels+'</svg>';
   }
 
   function buildSparkline(vals,color){
-    var W=60,H=20;
-    var max=Math.max.apply(null,vals),min=Math.min.apply(null,vals);
-    var pts=vals.map(function(v,i){
-      return ((i/(vals.length-1))*W).toFixed(1)+','+(H-((v-min)/(max-min||1))*H).toFixed(1);
-    }).join(' ');
+    var W=60,H=20,max=Math.max.apply(null,vals),min=Math.min.apply(null,vals);
+    var pts=vals.map(function(v,i){ return ((i/(vals.length-1))*W).toFixed(1)+','+(H-((v-min)/(max-min||1))*H).toFixed(1); }).join(' ');
     return '<svg viewBox="0 0 '+W+' '+H+'" width="60" height="20"><polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="1.5" stroke-linejoin="round"/></svg>';
   }
 
   function buildDonut(){
-    var r=22,cx=26,cy=26,circ=2*Math.PI*r;
+    var r=22,cx=26,cy=26,circ=2*Math.PI*r,offset=0;
     var segs=[{pct:0.5047,color:'#3b82f6'},{pct:0.28,color:'#22c55e'},{pct:0.215,color:'#8b5cf6'}];
-    var offset=0;
     var paths=segs.map(function(s){
       var dash=s.pct*circ,gap=circ-dash;
       var p='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+s.color+'" stroke-width="6" stroke-dasharray="'+dash.toFixed(2)+' '+gap.toFixed(2)+'" stroke-dashoffset="'+(-offset*circ).toFixed(2)+'" transform="rotate(-90 '+cx+' '+cy+')"/>';
@@ -127,11 +132,7 @@
       '</div>',
       '<div class="ft-panel-left">',
         '<span class="ft-section-title">Investment Overview</span>',
-        '<div class="ft-balance-main">',
-          '<div class="ft-balance-label">Current Balance</div>',
-          '<div class="ft-balance-amount">$4,124.00</div>',
-          '<div class="ft-balance-change">▲ 773%</div>',
-        '</div>',
+        '<div class="ft-balance-main"><div class="ft-balance-label">Current Balance</div><div class="ft-balance-amount">$4,124.00</div><div class="ft-balance-change">▲ 773%</div></div>',
         '<div class="ft-chart">'+buildBarChart()+'</div>',
         '<div class="ft-stat-row">',
           '<div class="ft-stat"><div class="ft-stat-icon green"><svg viewBox="0 0 24 24" stroke="#22c55e"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="18" x2="12" y2="6"/></svg></div><div><div class="ft-stat-name">Income</div><div class="ft-stat-val">+$4,245</div></div></div>',
@@ -148,30 +149,13 @@
           '<div class="ft-invest-card"><div class="ft-invest-pair">BTC/USD</div><div class="ft-invest-val">$7,124.00</div><div class="ft-trend up">↗ +5.3%</div><div class="ft-sparkline">'+buildSparkline([40,45,42,50,55,52,60,58,65],'#22c55e')+'</div></div>',
         '</div>',
         '<span class="ft-section-title">Portfolio</span>',
-        '<div class="ft-donut-wrap">',
-          buildDonut(),
-          '<div class="ft-donut-info">',
-            '<div class="ft-donut-pct">5047%</div>',
-            '<div class="ft-donut-label">Total return</div>',
-            '<div class="ft-donut-items">',
-              '<div class="ft-donut-item"><div class="ft-donut-dot" style="background:#3b82f6"></div>BTC 50.5%</div>',
-              '<div class="ft-donut-item"><div class="ft-donut-dot" style="background:#22c55e"></div>ETH 28.0%</div>',
-              '<div class="ft-donut-item"><div class="ft-donut-dot" style="background:#8b5cf6"></div>Other 21.5%</div>',
-            '</div>',
-          '</div>',
-        '</div>',
+        '<div class="ft-donut-wrap">'+buildDonut()+'<div class="ft-donut-info"><div class="ft-donut-pct">5047%</div><div class="ft-donut-label">Total return</div><div class="ft-donut-items"><div class="ft-donut-item"><div class="ft-donut-dot" style="background:#3b82f6"></div>BTC 50.5%</div><div class="ft-donut-item"><div class="ft-donut-dot" style="background:#22c55e"></div>ETH 28.0%</div><div class="ft-donut-item"><div class="ft-donut-dot" style="background:#8b5cf6"></div>Other 21.5%</div></div></div></div>',
         '<div class="ft-tx"><div class="ft-tx-icon">📈</div><span class="ft-tx-name">Nobut Thriva</span><span class="ft-tx-amount" style="color:#22c55e">+3000%</span></div>',
         '<div class="ft-tx"><div class="ft-tx-icon">💹</div><span class="ft-tx-name">$1,688.30</span><span class="ft-tx-amount" style="color:#22c55e">+3000%</span></div>',
       '</div>',
       '<div class="ft-panel-right">',
         '<div style="display:flex;align-items:center;justify-content:space-between;"><span class="ft-section-title">My cards</span><span style="font-size:16px;color:rgba(255,255,255,0.2);">···</span></div>',
-        '<div class="ft-card-visual">',
-          '<div style="display:flex;align-items:center;justify-content:space-between;">',
-            '<span class="ft-visa-logo">VISA</span>',
-            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>',
-          '</div>',
-          '<div><div class="ft-card-dots">•••• •••• •••• 2233</div><div class="ft-card-exp">07 / 2023</div></div>',
-        '</div>',
+        '<div class="ft-card-visual"><div style="display:flex;align-items:center;justify-content:space-between;"><span class="ft-visa-logo">VISA</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg></div><div><div class="ft-card-dots">•••• •••• •••• 2233</div><div class="ft-card-exp">07 / 2023</div></div></div>',
         '<div class="ft-total-balance"><div class="ft-total-label">Total balance</div><div class="ft-total-amount">$8,244.00</div></div>',
         '<span class="ft-section-title">Recent Activities</span>',
         '<div class="ft-activity"><div class="ft-act-icon" style="background:rgba(29,185,84,0.15)"><svg width="12" height="12" viewBox="0 0 24 24" fill="#1db954"><circle cx="12" cy="12" r="10"/></svg></div><div><div class="ft-act-name">Spotify</div><div class="ft-act-sub">Music Platform</div></div><span class="ft-act-amount">−$24.00</span></div>',
@@ -180,8 +164,6 @@
       '</div>'
     ].join('');
   }
-
-  container.style.background = '#010408';
 
   var uiSharp = document.createElement('div');
   uiSharp.className = 'ft-ui-layer';
@@ -290,7 +272,6 @@
     if(active||Math.abs(lx-mx)>0.2||Math.abs(ly-my)>0.2){
       var r=CFG.radius, organ=CFG.organ, POINTS=80;
       ctx.fillStyle='rgba(0,0,0,1)'; ctx.fillRect(0,0,W,H);
-
       ctx.save();
       ctx.globalCompositeOperation='destination-out';
       ctx.beginPath();
@@ -302,10 +283,8 @@
         i===0?ctx.moveTo(lx+nx*rr,ly+ny*rr):ctx.lineTo(lx+nx*rr,ly+ny*rr);
       }
       ctx.closePath(); ctx.fillStyle='rgba(0,0,0,1)'; ctx.fill();
-
       for(var layer=0;layer<16;layer++){
-        var progress=layer/16;
-        var layerR=r+organ*2*progress;
+        var progress=layer/16, layerR=r+organ*2*progress;
         ctx.beginPath();
         for(var i=0;i<=POINTS;i++){
           var angle=(i/POINTS)*Math.PI*2;
@@ -318,7 +297,6 @@
         ctx.fillStyle='rgba(0,0,0,'+(0.08*(1-progress))+')'; ctx.fill();
       }
       ctx.restore();
-
       if(CFG.residual>0){
         ctx.save(); ctx.globalCompositeOperation='source-over';
         var rg=ctx.createRadialGradient(lx,ly,0,lx,ly,r*1.2);
@@ -328,7 +306,6 @@
         ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(lx,ly,r*1.4,0,Math.PI*2); ctx.fill();
         ctx.restore();
       }
-
       var gs=r*3;
       glowEl.style.width=gs+'px'; glowEl.style.height=gs+'px';
       glowEl.style.left=lx.toFixed(1)+'px'; glowEl.style.top=ly.toFixed(1)+'px';
@@ -336,7 +313,6 @@
     } else {
       ctx.fillStyle='rgba(0,0,0,1)'; ctx.fillRect(0,0,W,H);
     }
-
     t+=0.01;
     requestAnimationFrame(draw);
   }
