@@ -127,10 +127,10 @@
   uiSharp.style.zIndex = '1';
   uiSharp.innerHTML = '<div class="ft-dashboard">'+buildDashboard()+'</div>';
   container.style.position = 'absolute';
-container.style.inset = '0';
-container.style.width = '100%';
-container.style.height = '100%';
-container.style.zIndex = '0';
+  container.style.inset = '0';
+  container.style.width = '100%';
+  container.style.height = '100%';
+  container.style.zIndex = '0';
   container.appendChild(uiSharp);
 
   var uiBlur = document.createElement('div');
