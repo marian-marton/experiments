@@ -7,7 +7,7 @@
   container.appendChild(canvas);
   var hint = document.createElement('div');
 hint.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:none;transition:opacity 0.8s ease;';
-hint.innerHTML = '<span style="font-size:12px;color:rgba(255,255,255,0.18);letter-spacing:0.2em;text-transform:uppercase;font-family:inherit;">Mueve el ratón para explorar</span>';
+hint.innerHTML = '<span style="font-size:12px;color:rgba(255,255,255,0.75);letter-spacing:0.2em;text-transform:uppercase;font-family:inherit;">Mueve el ratón para explorar</span>';
 container.appendChild(hint);
   var ctx = canvas.getContext('2d');
   var W, H, cx, cy;
