@@ -5,6 +5,10 @@
   var canvas = document.createElement('canvas');
   canvas.style.cssText = 'width:100%;height:100%;display:block;position:absolute;inset:0;';
   container.appendChild(canvas);
+  var hint = document.createElement('div');
+hint.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:none;transition:opacity 0.8s ease;';
+hint.innerHTML = '<span style="font-size:12px;color:rgba(255,255,255,0.18);letter-spacing:0.2em;text-transform:uppercase;font-family:inherit;">Mueve el ratón para explorar</span>';
+container.appendChild(hint);
   var ctx = canvas.getContext('2d');
   var W, H, cx, cy;
   var mouse = { x:-9999, y:-9999, active:false };
@@ -36,12 +40,14 @@
   window.addEventListener('resize',function(){ setTimeout(resize,200); });
   resize();
 
-  document.addEventListener('mousemove',function(e){
-    var r=container.getBoundingClientRect();
-    mouse.x=e.clientX-r.left;
-    mouse.y=e.clientY-r.top;
-    mouse.active=true;
-  });
+  var hintGone = false;
+document.addEventListener('mousemove',function(e){
+  var r=container.getBoundingClientRect();
+  mouse.x=e.clientX-r.left;
+  mouse.y=e.clientY-r.top;
+  mouse.active=true;
+  if(!hintGone){ hint.style.opacity='0'; hintGone=true; }
+});
 
   function fade(t){ return t*t*t*(t*(t*6-15)+10); }
   function lerpF(a,b,t){ return a+t*(b-a); }
